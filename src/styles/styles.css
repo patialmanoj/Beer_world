@@ -1,0 +1,60 @@
+#app{
+    font: 14px lato;
+    color : #4d4d4d;
+    min-width: 550px;
+    max-width: 850px;
+    margin: 0 auto;
+}
+a.active{
+    color:orange;
+}
+
+nav{
+    padding-top: 20px;
+}
+.width120{
+    width: 120%;
+
+}
+.cursorPointer{
+cursor : pointer;
+
+}
+.descriptionBox{
+    background-color: #78cef7;
+    color: #3a3737;
+    word-break: break-word;
+    padding: 4%;
+    margin-top: 2%;
+    font-family: lato;
+    font-weight: bold;
+
+}
+.h1{
+    font-family: lato;
+}
+.borderBox{
+    display: inline-block;
+    border: 1px solid #173507;
+    padding: 0 2% 0 2%;
+    border-radius: 5px;
+    color: #173507;
+    font-size: 16px;
+}
+.floatLeft
+{
+    float: left;
+}
+.floatRightmarginLeft2
+{
+    float: right;
+}
+.marginTop2{
+    margin-top: 2%;
+}
+.marginLeft2{
+    margin-left: 2%;
+}
+#displayBeer span{
+    font-weight: bold;
+}
