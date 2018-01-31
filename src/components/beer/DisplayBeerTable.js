@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import {Link} from 'react-router';
+
   class DisplayBeerTable extends React.Component {
 
 
@@ -17,12 +18,16 @@ import {Link} from 'react-router';
     render() {
       const {data} = this.props;
       return (
-        <div className="width120"> 
+        <div className="width120 marginTop2"> 
         <ReactTable
           data={data}
-          filterable= { true}
+          filterable= { false}
           columns={[
-            
+               {
+                Header: "Beer Image",
+                accessor: "labels",
+                Cell: props => <Link to={'/beer/'+props.value}><div className='cursorPointer bimg' style= {{backgroundImage: "url("+props.value+")"}}></div></Link>
+                },
                 {
                   Header: "Beer ID",
                   accessor: "id",
@@ -56,7 +61,14 @@ import {Link} from 'react-router';
             }
           defaultPageSize={10}
           className="-striped -highlight"
-        
+          getTrProps={(state, rowInfo, column) => {
+            return {
+              style: {
+               height : 100
+
+              }
+            }
+          }}
           getTdProps={(state, rowInfo, column, instance) => {
             return {
            

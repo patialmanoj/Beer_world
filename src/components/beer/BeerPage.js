@@ -1,4 +1,3 @@
-
 import React  from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -6,59 +5,21 @@ import { prototype } from 'stream';
 import {bindActionCreators} from 'redux';//save us from manually wrap our action creator in a dispatch call 
 import BeerTable  from './DisplayBeerTable';
 import *  as Constants from '../common/constant';
-
-
-const beers = [
-    {
-      id: "react-flux-building-applications",
-      title: "Heineken",
-      watchHref: "http://www.pluralsight.com/courses/react-flux-building-applications",
-      cost: "$123",
-      origin: "Italy",
-      description: "Its awesome and healthy"
-    },
-    {
-      id: "clean-code",
-      title: "Budweiser",
-      watchHref: "http://www.pluralsight.com/courses/writing-clean-code-humans",
-      cost: "$344",
-      origin: "Spain",
-      description: "Its awesome and healthy"
-    },
-    {
-      id: "architecture",
-      title: "Guinness",
-      watchHref: "http://www.pluralsight.com/courses/architecting-applications-dotnet",
-      cost: "$212",
-      origin: "England",
-      description: "Its awesome and healthy"
-    },
-    {
-      id: "career-reboot-for-developer-mind",
-      title: "Carlsberg",
-      watchHref: "http://www.pluralsight.com/courses/career-reboot-for-developer-mind",
-      cost: "$324",
-      origin: "India",
-      description: "Its awesome and healthy"
-    },
-    {
-      id: "web-components-shadow-dom",
-      title: "Miller Lite",
-      watchHref: "http://www.pluralsight.com/courses/web-components-shadow-dom",
-      cost: "$234",
-      origin: "Germany",
-      description: "Its awesome and healthy"
-    }
-  ];
+import toastr from 'toastr';
+const beers = [];
   
 class BeerPage extends React.Component{
     constructor(props,context){
         super(props,context);
         this.state= {
-            data: []
+            data: [],
+            searchKeyword :"",
+            searchedData : null
             
         }
         this.onSuccessMassagetheData = this.onSuccessMassagetheData.bind(this);
+        this.fetchTextBoxValue = this.fetchTextBoxValue.bind(this);
+        this.searchDataFromServer = this.searchDataFromServer.bind(this);
     }
     onSuccessMassagetheData(response){
         let massagedData = [];
@@ -72,19 +33,19 @@ class BeerPage extends React.Component{
                                               newobj.isOrganic = ob.isOrganic === "N" ? "No" : "Yes" ;
                                               newobj.statusDisplay = ob.statusDisplay;
                                               newobj.createDate= ob.createDate;
-                                              newobj.origin = ob.style.category.name; 
-                                              newobj.glassName = ob.glass.name;
-                                            
+                                              newobj.origin = (ob.style!= null)? ob.style.category!= null ?ob.style.category.name:"Not Available": "Not Available"; 
+                                              newobj.glassName = (ob.glass!= null)?ob.glass.name:"Not Available";
+                                              newobj.labels = (ob.labels != null)? ob.labels.icon.large :" ";
                                               return newobj;
                                             } );
 
             }else{
-                alert("OOPS !! bad response fetched from server");
+                toastr.warning("OOPS !! bad response fetched from server");
             }
 
         }
         else{
-            alert(" OOPS!! Server did not returned data ");
+            toastr.warning(" OOPS!! Server did not returned data ");
         }
 
         return massagedData;
@@ -100,14 +61,12 @@ class BeerPage extends React.Component{
           })
         
       });
-
-    
-    
-    fetch(request).then(function(response) {
+   
+       fetch(request).then(function(response) {
         return response.json()
         })
         .catch(function(err){
-            alert(err+ " :: Server is not in ready state");
+            toastr.warning(err+ " :: Server is not in ready state");
         })
         .then(function(response) {
             let responseData = JSON.parse(response);
@@ -116,21 +75,63 @@ class BeerPage extends React.Component{
             this.setState({ data: massagedData});
         }.bind(this))
         .catch(function(err){
-            console.log(err);
+            toastr.warning(err);
         });
 
     
-}
-    
+    }
 
+    fetchTextBoxValue(event){
+        this.setState({searchKeyword : event.target.value})
+    }
+    searchDataFromServer(){
+        let keyWord =  this.state.searchKeyword;
+        toastr.info( keyWord, "Search is in progress for");
+        
+        let request = new Request( Constants.URL+'beerapi/beer?query='+keyWord+ "&type=beer" , {
+            method :'get',
+            mode: 'cors',
+            origin: Constants.URL,
+            headers: new Headers({
+                'Content-Type':  "text/json"
+              })
+            
+          });
+        fetch(request).then(function(response) {
+            return response.json()
+            })
+            .catch(function(err){
+                //alert(err+ " :: Server is not in ready state");
+                toastr.warning(err+ " :: Server is not in ready state");
+            })
+            .then(function(response) {
+                let responseData = JSON.parse(response);
+                //this.setState({searchKeyword : ""});
+                let massagedData =  this.onSuccessMassagetheData(responseData);
+                this.setState({ searchedData : responseData});
+
+                this.setState({ data : massagedData}); // changing the data of table
+
+            }.bind(this))
+            .catch(function(err){
+               // console.log(err);
+                toastr.warning("Data not fetched correctly");
+            });
+
+    }
     render(){
-        let table  = <div>Table Loading .......................</div>
+        let table  = <div> Loading Data </div>
         if(this.state.data.length != 0){
             table =  <BeerTable data = { this.state.data }/>
         }
         return(
             <div>
-                <h1>Beers</h1>
+                <h1 className="beer_title">Beers</h1>
+                {/* <SearchBox/> */}
+                <div className ="b_searchBox">
+                    <input  placeholderText = "Please Enter Here"  onChange= {this.fetchTextBoxValue} className = "inp_searchBox"type="text"/>
+                    <button className = "btn_searchBox"  onClick = {this.searchDataFromServer} type ="submit">Search</button>
+                </div>
                 {table}
                 {/* <BeerTable /> */}
             </div>

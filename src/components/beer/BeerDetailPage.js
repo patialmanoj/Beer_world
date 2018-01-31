@@ -2,6 +2,7 @@ import React  from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import *  as Constants from '../common/constant';
+import toastr from 'toastr';
 
   class BeerDetailPage extends React.Component {
 
@@ -15,7 +16,7 @@ import *  as Constants from '../common/constant';
       
     }
     componentDidMount() {
-        console.log(' id gonna fetch .' +this.props.params.id);
+        //console.log(' id gonna fetch .' +this.props.params.id);
         let request = new Request( Constants.URL+'beerapi/beer/'+this.props.params.id, {
         method :'get',
         mode: 'cors',
@@ -31,14 +32,16 @@ import *  as Constants from '../common/constant';
         return response.json()
         })
         .catch(function(err){
-            alert(err+ " :: Server is not in ready state");
+            //alert(err+ " :: Server is not in ready state");
+            toastr.warning(err+ " :: Server is not in ready state");
         })
         .then(function(response) {
             let responseData = JSON.parse(response);
             this.setState({ data: responseData});
         }.bind(this))
         .catch(function(err){
-            console.log(err);
+           // console.log(err);
+            toastr.warning("Data not fetched correctly");
         });
 
     

@@ -11,15 +11,25 @@ a.active{
 
 nav{
     padding-top: 20px;
+    background-color: #e8fbe8;
+    margin-top: 1%;
+    font-size: 20px;
 }
 .width120{
     width: 120%;
-
+}
+.bimg{
+    width: 90%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 90%;
+    /* padding: 30px; */
+    margin-left: 1em;
 }
 .cursorPointer{
 cursor : pointer;
-
 }
+
 .descriptionBox{
     background-color: #78cef7;
     color: #3a3737;
@@ -52,9 +62,50 @@ cursor : pointer;
 .marginTop2{
     margin-top: 2%;
 }
+.marginTop_2{
+    margin-top: -4%;
+}
 .marginLeft2{
     margin-left: 2%;
 }
 #displayBeer span{
     font-weight: bold;
+}
+.b_searchBox{
+    display: inline-block;
+    width: 21%;
+    height: 4%;
+    border: 1px solid #c5c3c3;
+    border-radius: 5px;
+    margin-left: -22%;
+    margin-top: 3%;
+    position: absolute;
+}
+.inp_searchBox{
+    width:  70%;
+    border : none;
+    border-radius:  5px;
+    padding-left: 10px;
+}
+.btn_searchBox{
+    display: inline-block;
+    width: 30%;
+    height: 100%;
+    color: rgb(20, 56, 20);
+    background-color: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+.beer_title{
+
+    margin-left: -22%;
+    display: inline-block;
+    margin-top: 0%;
+    position: absolute;
 }
