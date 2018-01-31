@@ -13,9 +13,7 @@ import '../node_modules/toastr/build/toastr.min.css';
 
 
 render(
-    // <Provider store={store}>
-    //     <Router history={browserHistory} routes={routes}/>
-    // </Provider>,
+    
     <Router history={browserHistory} routes={routes}/>,
      document.getElementById('app')
 );

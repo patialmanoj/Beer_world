@@ -16,6 +16,7 @@ import {Link} from 'react-router';
         }   
     }
     render() {
+      debugger;
       const {data} = this.props;
       return (
         <div className="width120 marginTop2"> 
@@ -23,11 +24,11 @@ import {Link} from 'react-router';
           data={data}
           filterable= { false}
           columns={[
-               {
-                Header: "Beer Image",
-                accessor: "labels",
-                Cell: props => <Link to={'/beer/'+props.value}><div className='cursorPointer bimg' style= {{backgroundImage: "url("+props.value+")"}}></div></Link>
-                },
+              //  {
+              //   Header: "Beer Image",
+              //   accessor: "labels",
+              //   Cell: props => <div className='cursorPointer bimg' style= {{backgroundImage: "url("+props.value+")"}}></div>
+              //   },
                 {
                   Header: "Beer ID",
                   accessor: "id",
@@ -59,24 +60,26 @@ import {Link} from 'react-router';
                   }
               ]
             }
+            defaultSorted={[
+              {
+                id: "nameDisplay",
+                desc: true
+              }
+            ]}
           defaultPageSize={10}
           className="-striped -highlight"
-          getTrProps={(state, rowInfo, column) => {
-            return {
-              style: {
-               height : 100
+          // getTrProps={(state, rowInfo, column) => {
+          //   return {
+          //     style: {
+          //      height : 100
 
-              }
-            }
-          }}
+          //     }
+          //   }
+          // }}
           getTdProps={(state, rowInfo, column, instance) => {
             return {
            
               onClick: (e, handleOriginal) => {
-                // console.log('A Td Element was clicked!')
-                // console.log('it produced this event:', e)
-                // console.log('It was in this column:', column)
-                // console.log('It was in this row:', rowInfo)
                
                 if (handleOriginal) {
                   handleOriginal()
@@ -89,9 +92,6 @@ import {Link} from 'react-router';
       );
     }
   }
-//   DisplayBeerTable.propTypes = { 
-//     beers: PropTypes.array.isRequired
-//    };
-DisplayBeerTable
+
 
   export default DisplayBeerTable;
